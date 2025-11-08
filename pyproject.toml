@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "legotrains"
+version = "0.1.0"
+description = "Textual TUI to teach Python via Lego Powered Up trains"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  {name = "Richard G. Roman", email = "rits@rits.hu"},
+]
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["legotrains", "legotrains.*"]

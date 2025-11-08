@@ -9,6 +9,7 @@ A text-UI (TUI) app to teach Python programming via controlling Lego Powered Up 
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+pip install -e .
 ```
 
 ## Running the App

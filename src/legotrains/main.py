@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+
 def main() -> None:
     """Placeholder main entrypoint; wire up Textual app here."""
-    raise NotImplementedError("TUI wiring pending")
+    print("LegoTrains TUI entrypoint is under construction.")
 
 
 if __name__ == "__main__":
