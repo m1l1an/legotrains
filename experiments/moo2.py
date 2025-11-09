@@ -12,4 +12,3 @@ channel = moo.play()  # returns immediately
 # Check if still playing
 while channel.get_busy():
     sleep(0.01)
-

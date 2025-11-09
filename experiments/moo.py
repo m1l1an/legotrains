@@ -7,7 +7,8 @@ import simpleaudio as sa
 def main() -> None:
     sound_path = Path(__file__).resolve().parents[1] / "sounds" / "moo.wav"
     wave_obj = sa.WaveObject.from_wave_file(str(sound_path))
-    play_obj = wave_obj.play()
+    # play_obj =
+    wave_obj.play()
 
     # Derive the duration manually instead of calling wait_done(), which
     # crashes on macOS/Python 3.12 via simpleaudio's _is_playing.
