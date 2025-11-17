@@ -10,7 +10,7 @@
 ### Milestone A – Platform Foundations
 1. **Task A1: Configuration Loader**
    - Implement `legotrains.config` to read env vars / YAML for hub IDs and BLE options.
-   - Provide dataclasses for settings + validation.
+   - Provide dataclasses for settings + validation (hub MAC optional; when present it overrides hub name for matching).
    - *Tests*: unit tests covering env overrides, invalid config, and default fallbacks.
 2. **Task A2: State Store & Events**
    - Create `StateStore`, `TrainState`, `HubState`, and `Event` dataclasses.

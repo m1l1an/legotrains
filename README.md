@@ -45,3 +45,7 @@ pip install -r requirements.txt
 We are using pylgbst ("Python Lego Boost") to connect to the Lego Powered Up hubs.
 
 We need to install the latest from GitHub - the current version on PyPi does not support the latest Bleak library.
+
+## Links
+
+- [Official Lego BLE Protocol Documentation](https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#document-index)
