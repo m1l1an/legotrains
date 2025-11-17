@@ -46,3 +46,14 @@ def test_update_hub_state_sets_connection_details() -> None:
     assert hub_state.connection_state == HubConnectionState.CONNECTED
     assert hub_state.battery_level == 90.0
     assert registry.get("freight").state.hub == hub_state
+
+
+def test_train_states_snapshot() -> None:
+    configs = (
+        TrainConfig(identifier="freight", name="Freight", hub_mac=None),
+        TrainConfig(identifier="passenger", name="Passenger", hub_mac=None),
+    )
+    registry = HubRegistry.from_train_configs(configs)
+    states = registry.train_states()
+    assert len(states) == 2
+    assert {state.identifier for state in states} == {"freight", "passenger"}

@@ -2,3 +2,4 @@ textual
 pygame
 pylgbst @ git+https://github.com/undera/pylgbst.git
 pyyaml
+bleak

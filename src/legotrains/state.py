@@ -7,7 +7,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass, field, replace
 from datetime import datetime, timezone
 from enum import Enum, auto
-from typing import Any, Final, MutableMapping
+from typing import Any, MutableMapping
 
 
 class HubConnectionState(Enum):

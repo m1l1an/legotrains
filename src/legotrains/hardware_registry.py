@@ -33,6 +33,9 @@ class HubRegistry:
     def __iter__(self) -> Iterator[RegisteredTrain]:
         return iter(self._trains.values())
 
+    def train_states(self) -> tuple[TrainState, ...]:
+        return tuple(entry.state for entry in self._trains.values())
+
     def get(self, identifier: str) -> RegisteredTrain:
         try:
             return self._trains[identifier]
