@@ -30,7 +30,7 @@ def test_scanner_publishes_events_for_known_macs() -> None:
                 TrainConfig(identifier="freight", name="Freight", hub_mac="AA:BB:CC:01"),
             )
         )
-        backend = FakeScannerBackend([ScanResult(address="aa:bb:cc:01", rssi=-40)])
+        backend = FakeScannerBackend([ScanResult(address="aa:bb:cc:01", name="Freight")])
         bus = EventBus()
         queue = bus.subscribe(maxsize=5)
 
@@ -48,12 +48,12 @@ def test_scanner_publishes_events_for_known_macs() -> None:
         event = await queue.get()
         assert event.type == "hub_discovered"
         assert event.payload["train"] == "freight"
-        assert manager.calls == [("aa:bb:cc:01", -40)]
+        assert manager.calls == ["freight"]
 
     run(scenario())
 class FakeConnectionManager:
     def __init__(self) -> None:
-        self.calls: list[tuple[str, float | None]] = []
+        self.calls: list[str] = []
 
-    async def handle_discovery(self, mac: str, *, rssi: float | None = None) -> None:
-        self.calls.append((mac, rssi))
+    async def connect(self, identifier: str, *, rssi: float | None = None) -> None:
+        self.calls.append(identifier)

@@ -49,6 +49,15 @@ class HubRegistry:
                 return train
         return None
 
+    def find_by_name(self, name: str | None) -> RegisteredTrain | None:
+        if not name:
+            return None
+        name_lower = name.lower()
+        for train in self._trains.values():
+            if train.config.name.lower() == name_lower:
+                return train
+        return None
+
     def update_hub_state(
         self,
         identifier: str,

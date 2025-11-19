@@ -30,6 +30,15 @@ def test_find_by_mac_matches_only_when_present() -> None:
     assert registry.find_by_mac("aa:bb") is None
 
 
+def test_find_by_name_matches_case_insensitive() -> None:
+    registry = HubRegistry.from_train_configs(
+        (TrainConfig(identifier="freight", name="FreightTrain", hub_mac=None),)
+    )
+    match = registry.find_by_name("freighttrain")
+    assert match is not None
+    assert match.config.identifier == "freight"
+
+
 def test_update_hub_state_sets_connection_details() -> None:
     registry = HubRegistry.from_train_configs(
         (

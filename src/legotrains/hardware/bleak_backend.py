@@ -2,12 +2,8 @@
 
 from __future__ import annotations
 
+from bleak import BleakScanner
 from typing import Iterable
-
-try:
-    from bleak import BleakScanner
-except ImportError as exc:  # pragma: no cover - fallback when bleak missing
-    raise RuntimeError("bleak is required for BLE scanning") from exc
 
 from ..hardware_scanner import ScanResult, ScannerBackend
 
@@ -18,11 +14,10 @@ class BleakScannerBackend(ScannerBackend):
 
     async def scan(self) -> Iterable[ScanResult]:
         devices = await BleakScanner.discover(adapter=self._adapter)
-        results: list[ScanResult] = []
-        for device in devices:
-            rssi = getattr(device, "rssi", None)
-            if rssi is None:
-                metadata = getattr(device, "metadata", {}) or {}
-                rssi = metadata.get("RSSI")
-            results.append(ScanResult(address=device.address, rssi=rssi))
-        return results
+        return [
+            ScanResult(
+                address=device.address,
+                name=getattr(device, "name", None),
+            )
+            for device in devices
+        ]

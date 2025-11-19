@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Iterable, Protocol
+from typing import TYPE_CHECKING, Iterable, Protocol, List
 import contextlib
 
 from .hardware_registry import HubRegistry
@@ -19,7 +19,7 @@ class ScanResult:
     """Represents a single BLE discovery result."""
 
     address: str
-    rssi: float | None = None
+    name: str | None = None
 
 
 class ScannerBackend(Protocol):
@@ -87,21 +87,28 @@ class BleScannerService:
                 Event(type="scanner_error", message=str(exc), severity=EventSeverity.ERROR)
             )
             return
-
+        
+        names: List[str] = []
         for result in results:
-            train = self._registry.find_by_mac(result.address)
+            names.append(result.name or "NO_NAME")
+            train = self._registry.find_by_name(result.name)
+            match_source = "name"
+            if not train:
+                train = self._registry.find_by_mac(result.address)
+                match_source = "address"
             if not train:
                 continue
             if self._connection_manager:
-                await self._connection_manager.handle_discovery(result.address, rssi=result.rssi)
+                await self._connection_manager.connect(train.config.identifier)
             await self._publish_event(
                 Event(
                     type="hub_discovered",
-                    message=f"Detected hub for {train.config.name}",
+                    message=f"Detected hub for {train.config.name} via {match_source}",
                     severity=EventSeverity.INFO,
-                    payload={"train": train.state.identifier, "rssi": result.rssi},
+                    payload={"train": train.state.identifier, "source": match_source},
                 )
             )
+        await self._log(f"Found BLE devices: {",".join(names)}")
 
     async def _publish_event(self, event: Event) -> None:
         if not self._event_bus:
@@ -111,3 +118,8 @@ class BleScannerService:
             await self._event_bus.publish(event)
         else:  # pragma: no cover - fallback
             asyncio.run(self._event_bus.publish(event))
+
+    async def _log(self, message: str, *, severity: EventSeverity = EventSeverity.INFO) -> None:
+        if not self._event_bus:
+            return
+        await self._event_bus.publish(Event(type="scanner_log", message=message, severity=severity))

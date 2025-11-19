@@ -84,7 +84,7 @@ We need to install the latest from GitHub - the current version on PyPi does not
 
 This application has largely been written by using OpenAI Codex. First, [[doc/PRD.md]] was hand-written, then Codex came up with [[doc/ai/DESIGN.md]] (which was a bit refined), then plan was created and put into [[doc/ai/PLAN.md]].
 
-## Random Experience
+## Notes on Dev Experience
 
 - looks nice, almost all unit tests pass at first shot
 - but... it does not work. Also, it looks overcomplicated (eg, log levels not being used at all - then again, not necessarily a bad idea)

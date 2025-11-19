@@ -41,7 +41,7 @@ class HubState:
     identifier: str
     connection_state: HubConnectionState = HubConnectionState.DISCONNECTED
     battery_level: float | None = None
-    rssi: float | None = None
+    rssi: float | None = None  # retained for future metrics but no longer populated
 
 
 @dataclass(frozen=True)

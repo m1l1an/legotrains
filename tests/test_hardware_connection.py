@@ -45,7 +45,7 @@ def run(coro):
     return asyncio.run(coro)
 
 
-def test_handle_discovery_connects_and_updates_state() -> None:
+def test_connect_invoked_updates_state() -> None:
     async def scenario() -> None:
         configs = (
             TrainConfig(identifier="freight", name="Freight", hub_mac="AA:BB:CC:01"),
@@ -63,12 +63,13 @@ def test_handle_discovery_connects_and_updates_state() -> None:
             state_store=state_store,
         )
 
-        await manager.handle_discovery("aa:bb:cc:01", rssi=-35)
+        await manager.connect("freight")
 
         assert adapter.targets == ["AA:BB:CC:01"]
         hub_state = registry.get("freight").state.hub
         assert hub_state is not None
         assert hub_state.connection_state == HubConnectionState.CONNECTED
+        assert (await queue.get()).type == "hub_connecting"
         event = await queue.get()
         assert event.type == "hub_connected"
         assert any("freight" in update for update in state_store.updates)
@@ -108,6 +109,7 @@ def test_connect_failure_updates_state_and_emits_event() -> None:
         hub_state = registry.get("freight").state.hub
         assert hub_state is not None
         assert hub_state.connection_state == HubConnectionState.DISCONNECTED
+        assert (await queue.get()).type == "hub_connecting"
         event = await queue.get()
         assert event.type == "hub_connect_failed"
 

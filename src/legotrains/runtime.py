@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
-from .config import AppConfig, TrainConfig, load_config
+from .config import AppConfig, load_config
 from .control_commands import TrainCommandHandler
 from .control_input import InputMapper, default_input_mapper
 from .hardware_connection import HubAdapter, HubConnectionManager
@@ -14,7 +13,7 @@ from .hardware_registry import HubRegistry
 from .hardware_scanner import BleScannerService, ScannerBackend
 from .hardware.bleak_backend import BleakScannerBackend
 from .hardware.pylgbst_adapter import PylgbstAdapter
-from .state import AppState, EventBus, StateStore, TrainState
+from .state import AppState, EventBus, StateStore
 
 
 @dataclass(slots=True)
@@ -46,7 +45,7 @@ def build_runtime(
     event_bus = EventBus()
     connection_manager = HubConnectionManager(
         registry,
-    adapter or PylgbstAdapter(event_bus=event_bus),
+        adapter or PylgbstAdapter(event_bus=event_bus),
         event_bus=event_bus,
         state_store=state_store,
     )

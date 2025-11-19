@@ -15,7 +15,7 @@ from ..config import DEFAULT_TRAINS
 from ..control_commands import TrainCommandHandler
 from ..control_input import InputMapper
 from ..programs import load_program
-from ..state import AppState, Event, EventBus, HubConnectionState, StateStore, TrainMotion, TrainState
+from ..state import AppState, Event, EventBus, StateStore, TrainMotion, TrainState
 from ..hardware_scanner import BleScannerService
 from .widgets import LogPanel, ProgramList, TrainPanel, TrainPanelData
 
@@ -54,7 +54,7 @@ class LegoTrainsApp(App[None]):
     ) -> None:
         super().__init__()
         self._state_store = state_store or self._build_default_state_store()
-        self._program_names = list(program_names or ["Start All Trains"])
+        self._program_names = list(program_names or [])
         self._state_task: asyncio.Task[None] | None = None
         self._state_queue: asyncio.Queue[AppState] | None = None
         self._command_handler = command_handler
@@ -114,7 +114,7 @@ class LegoTrainsApp(App[None]):
     async def on_list_view_selected(self, message: ListView.Selected) -> None:
         if not self._command_handler:
             return
-        if message.index is None or message.index >= len(self._program_names):
+        if message.index >= len(self._program_names):
             return
         program_name = self._program_names[message.index]
         await self._run_program(program_name)

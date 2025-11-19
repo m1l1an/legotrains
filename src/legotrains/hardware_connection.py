@@ -55,11 +55,8 @@ class HubConnectionManager:
         self._loop = loop
         self._state_store = state_store
 
-    async def handle_discovery(self, mac: str, *, rssi: float | None = None) -> None:
-        train = self._registry.find_by_mac(mac)
-        if not train:
-            return
-        await self.connect(train.config.identifier, rssi=rssi)
+    async def handle_discovery(self, identifier: str) -> None:
+        await self.connect(identifier)
 
     async def connect(self, identifier: str, *, rssi: float | None = None) -> None:
         record = self._connections[identifier]
