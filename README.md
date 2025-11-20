@@ -87,7 +87,8 @@ This application has largely been written by using OpenAI Codex. First, [[doc/PR
 ## Notes on Dev Experience
 
 - looks nice, almost all unit tests pass at first shot
-- but... it does not work. Also, it looks overcomplicated (eg, log levels not being used at all - then again, not necessarily a bad idea)
+- but... it does not work.
+- code is overcomplicated (eg, log levels not being used at all, never used constructor parameters - typical YAGNI)
 - basic things need to be manually instructed (eg, start scanning for trains in the beginning, produce logs about it)
 - the overall design and async workings are impressive though
 - lot of errors still left in the code - Pylance shows them

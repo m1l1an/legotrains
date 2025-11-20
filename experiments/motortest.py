@@ -24,7 +24,9 @@ def run_train_motor():
         # This function scans and connects to the first hub it finds matching the name
         # If no name is provided, it connects to the first available hub.
         # conn = get_connection_auto(TARGET_HUB_NAME)
-        conn = get_connection_bleak(hub_mac="90:84:2B:CB:94:90")
+        # conn = get_connection_bleak(hub_mac="90:84:2B:CB:94:90")
+        conn = get_connection_bleak(hub_name="PassengerTrain")
+        print("creating hub")
         hub = MoveHub(conn)
 
         print("✅ Connection successful!")

@@ -36,7 +36,7 @@ class LegoTrainsApp(App[None]):
         width: 1fr;
     }
     LogPanel {
-        height: 9;
+        height: 15;
     }
     """
 

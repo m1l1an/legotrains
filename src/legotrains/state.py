@@ -117,6 +117,8 @@ class EventBus:
             for queue in dead:
                 self._subscribers.discard(queue)
 
+    async def log(self, message: str, severity: EventSeverity = EventSeverity.INFO):
+        await self.publish(Event(type="log", message=message, severity=severity))
 
 class StateStore:
     """Concurrency-safe store for immutable AppState snapshots."""

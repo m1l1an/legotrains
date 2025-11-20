@@ -6,7 +6,7 @@ import asyncio
 from dataclasses import dataclass
 from typing import Callable, Optional
 
-from pylgbst import get_connection_auto
+from pylgbst import get_connection_bleak
 from pylgbst.hub import MoveHub
 from pylgbst.peripherals import EncodedMotor
 
@@ -51,7 +51,7 @@ class PylgbstHubSession(HubSession):
     async def set_speed(self, speed: int) -> None:
         motor = await self._ensure_motor()
         loop = asyncio.get_running_loop()
-        await loop.run_in_executor(None, motor.start_power, speed)
+        await loop.run_in_executor(None, motor.power, speed / 100.0)
 
     async def stop(self) -> None:
         if not self._motor:
@@ -69,7 +69,7 @@ class PylgbstAdapter(HubAdapter):
         self,
         *,
         event_bus: EventBus | None = None,
-        connection_factory: Callable[..., any] = get_connection_auto,
+        connection_factory: Callable[..., any] = get_connection_bleak,
         hub_cls: type[MoveHub] = MoveHub,
     ) -> None:
         self._event_bus = event_bus
@@ -78,6 +78,8 @@ class PylgbstAdapter(HubAdapter):
 
     async def connect(self, target: str) -> HubSession:
         hub_mac, hub_name = _resolve_connection_target(target)
+        if self._event_bus:
+            await self._event_bus.log(f"Found mac:{hub_mac} name:{hub_name} - connecting...")
         loop = asyncio.get_running_loop()
 
         def _connect() -> MoveHub:

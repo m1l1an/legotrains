@@ -1,16 +1,16 @@
 from __future__ import annotations
 
-from legotrains.control_input import CommandType, InputMapper, InputCommand, default_input_mapper
+from legotrains.control_input import CommandType, InputMapper, InputCommand, default_input_mapper, SPEED_STEP_SIZE
 
 
 def test_default_mapper_has_expected_bindings() -> None:
     mapper = default_input_mapper()
     cmd = mapper.map_key("w", timestamp_ms=lambda: 1000)
-    assert cmd == InputCommand(train_id="freight", command=CommandType.SPEED_STEP, value=5)
+    assert cmd == InputCommand(train_id="passenger", command=CommandType.SPEED_STEP, value=SPEED_STEP_SIZE)
 
 
 def test_mapper_debounce() -> None:
-    mapper = InputMapper(bindings={"w": InputCommand(train_id="freight", command=CommandType.SPEED_STEP, value=5)}, debounce_ms=50)
+    mapper = InputMapper(bindings={"w": InputCommand(train_id="passenger", command=CommandType.SPEED_STEP, value=SPEED_STEP_SIZE)}, debounce_ms=50)
 
     first = mapper.map_key("w", timestamp_ms=lambda: 1000)
     assert first is not None

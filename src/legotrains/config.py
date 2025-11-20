@@ -22,7 +22,7 @@ DEFAULT_SCAN_INTERVAL_SECONDS: Final[float] = 2.5
 DEFAULT_CONNECT_TIMEOUT_SECONDS: Final[float] = 8.0
 
 DEFAULT_TRAINS: Final[tuple[dict[str, str | None]], ...] = (
-    {"id": "freight", "name": "FreightTrain", "hub_mac": "00:16:53:AA:AA:AA"},
+    {"id": "freight", "name": "FreightTrain", "hub_mac": None},
     {"id": "passenger", "name": "PassengerTrain", "hub_mac": None},
 )
 

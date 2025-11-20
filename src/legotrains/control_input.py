@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Callable, Mapping
 
+SPEED_STEP_SIZE = 10
 
 class CommandType(Enum):
     """Semantic command types triggered by input."""
@@ -48,15 +49,15 @@ class InputMapper:
 
 def default_input_mapper() -> InputMapper:
     bindings: dict[str, InputCommand] = {}
-    bindings["w"] = InputCommand(train_id="freight", command=CommandType.SPEED_STEP, value=5)
-    bindings["s"] = InputCommand(train_id="freight", command=CommandType.SPEED_STEP, value=-5)
-    bindings["x"] = InputCommand(train_id="freight", command=CommandType.SPEED_STOP)
-    bindings["i"] = InputCommand(train_id="passenger", command=CommandType.SPEED_STEP, value=5)
-    bindings["k"] = InputCommand(train_id="passenger", command=CommandType.SPEED_STEP, value=-5)
-    bindings[","] = InputCommand(train_id="passenger", command=CommandType.SPEED_STOP)
+    bindings["i"] = InputCommand(train_id="freight", command=CommandType.SPEED_STEP, value=SPEED_STEP_SIZE)
+    bindings["k"] = InputCommand(train_id="freight", command=CommandType.SPEED_STEP, value=-SPEED_STEP_SIZE)
+    bindings[","] = InputCommand(train_id="freight", command=CommandType.SPEED_STOP)
+    bindings["w"] = InputCommand(train_id="passenger", command=CommandType.SPEED_STEP, value=SPEED_STEP_SIZE)
+    bindings["s"] = InputCommand(train_id="passenger", command=CommandType.SPEED_STEP, value=-SPEED_STEP_SIZE)
+    bindings["x"] = InputCommand(train_id="passenger", command=CommandType.SPEED_STOP)
 
-    bindings["W"] = InputCommand(train_id="freight", command=CommandType.SPEED_MAX, value=100)
-    bindings["S"] = InputCommand(train_id="freight", command=CommandType.SPEED_MAX, value=-100)
-    bindings["I"] = InputCommand(train_id="passenger", command=CommandType.SPEED_MAX, value=100)
-    bindings["K"] = InputCommand(train_id="passenger", command=CommandType.SPEED_MAX, value=-100)
+    bindings["I"] = InputCommand(train_id="freight", command=CommandType.SPEED_MAX, value=100)
+    bindings["K"] = InputCommand(train_id="freight", command=CommandType.SPEED_MAX, value=-100)
+    bindings["W"] = InputCommand(train_id="passenger", command=CommandType.SPEED_MAX, value=100)
+    bindings["S"] = InputCommand(train_id="passenger", command=CommandType.SPEED_MAX, value=-100)
     return InputMapper(bindings=bindings)
