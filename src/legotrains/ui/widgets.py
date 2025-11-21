@@ -67,19 +67,21 @@ class ProgramList(ListView):
         for name in self._programs:
             self.append(ListItem(Label(name)))
 
+LOG_LINES_DISPLAYED = 9
+
 
 class LogPanel(Static):
-    """Simple placeholder log panel."""
+    """Log panel with fixed height derived from LOG_LINES_DISPLAYED."""
 
-    DEFAULT_CSS = """
-    LogPanel {
-        height: 9;
+    DEFAULT_CSS = f"""
+    LogPanel {{
+        height: {LOG_LINES_DISPLAYED};
         border: solid gray;
         padding: 1;
-    }
+    }}
     """
 
-    def __init__(self, max_entries: int = 20) -> None:
+    def __init__(self, max_entries: int = LOG_LINES_DISPLAYED) -> None:
         super().__init__()
         self._entries: list[str] = []
         self._max_entries = max_entries
@@ -95,6 +97,6 @@ class LogPanel(Static):
         if not self._entries:
             table.add_row("[dim]Log messages appear here...[/dim]")
         else:
-            for entry in reversed(self._entries[-5:]):
+            for entry in self._entries[-self._max_entries :]:
                 table.add_row(entry)
         return Panel(table, title="Log")

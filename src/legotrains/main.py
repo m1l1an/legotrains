@@ -13,6 +13,7 @@ def main() -> None:
     """Launch the Textual UI."""
 
     discover_programs_from_package("legotrains.programs.examples")
+    discover_programs_from_package("legotrains.programs.tasks")
     runtime = build_runtime()
     program_names = [meta.name for meta in available_programs()]
     app = LegoTrainsApp(
