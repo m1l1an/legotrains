@@ -100,6 +100,7 @@ class LegoTrainsApp(App[None]):
         self._log_panel = LogPanel()
         yield self._log_panel
         yield Footer()
+        self.call_after_refresh(self._select_first_program)
 
     async def on_key(self, event: Key) -> None:
         if self._input_mapper and self._command_handler:
@@ -193,3 +194,6 @@ class LegoTrainsApp(App[None]):
             for cfg in DEFAULT_TRAINS
         )
         return StateStore(AppState(trains=trains))
+    def _select_first_program(self) -> None:
+        if self._program_names:
+            self._program_list.index = 0

@@ -51,11 +51,19 @@ class TrainProgram:
 
         raise NotImplementedError
 
-    async def set_speed(self, train_id: str, speed: int) -> None:
-        await self._connections.set_speed(train_id, speed)
+    async def set_speed(self, train_id: str, speed: int) -> bool:
+        try:
+            await self._connections.set_speed(train_id, speed)
+            return True
+        except RuntimeError as exc:
+            await self.log(str(exc), severity=EventSeverity.WARNING)
+            return False
 
     async def stop(self, train_id: str) -> None:
-        await self._connections.stop(train_id)
+        try:
+            await self._connections.stop(train_id)
+        except RuntimeError as exc:
+            await self.log(str(exc), severity=EventSeverity.WARNING)
 
     async def log(self, message: str, *, severity: EventSeverity = EventSeverity.INFO) -> None:
         if not self._event_bus:
